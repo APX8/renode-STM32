@@ -6,7 +6,7 @@ https://github.com/APX8/STM32F4-project
 
 Instructions to run this example in the renode simulation environment.
 
-(0)Install Renode
+(0) Install Renode
 
 (1) Clone this repository to a local directory on your machine.
 https://github.com/APX8/renode-STM32
