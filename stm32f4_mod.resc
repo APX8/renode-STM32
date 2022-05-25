@@ -1,0 +1,33 @@
+:name: STM32F4 Discovery ("stm32f4_mod.resc")
+:description: Modified version of STM32F4 Discovery script that comes with renode installation.
+
+using sysbus
+$name?="STM32F4_Disco"
+mach create $name
+machine LoadPlatformDescription @stm32f4_mod.repl
+
+cpu PerformanceInMips 125
+
+$elf?=@stm32f4proj.elf
+
+showAnalyzer sysbus.usart2
+
+### Set random board UNIQUE ID ###
+
+python "import _random"
+python "rand = _random.Random()"
+
+$id1 = `python "print rand.getrandbits(32)"`
+$id2 = `python "print rand.getrandbits(32)"`
+$id3 = `python "print rand.getrandbits(32)"`
+macro reset
+"""
+    sysbus LoadELF $elf
+
+    sysbus WriteDoubleWord 0x1FFF7A10 $id1
+    sysbus WriteDoubleWord 0x1FFF7A14 $id2
+    sysbus WriteDoubleWord 0x1FFF7A18 $id3
+"""
+
+runMacro $reset
+
